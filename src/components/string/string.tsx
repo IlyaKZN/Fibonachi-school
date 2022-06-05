@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from "react";
-import styles from "./string.module.css";
+import React, { ChangeEvent, useState, FC } from "react";
+import styles from "./styles.module.css";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -11,7 +11,7 @@ type TStringComponent = {
   inProgress: boolean;
 };
 
-export const StringComponent: React.FC = () => {
+export const StringComponent: FC = () => {
   const [stringValue, setStringValue] = useState<string>("");
   const [algorithmState, setAlgorithmState] = useState<TStringComponent>({
     splitString: [],

@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  max-width: 522px;
+  margin: 0 auto 120px auto;
+}
+
+.circleContainer {
+  display: flex;
+  gap: 16px;
+  margin: 0 auto;
+  max-width: 944px;
+  flex-wrap: wrap;
+  row-gap: 78px;
+}
