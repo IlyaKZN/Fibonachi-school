@@ -4,6 +4,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const FibonacciPage: FC = () => {
 
@@ -51,7 +52,7 @@ export const FibonacciPage: FC = () => {
   useEffect(() => {
 
     if(fibonacciNumbers.length) {
-      const interval = setInterval(() => setCounter({ value: counter.value++ }), 500);
+      const interval = setInterval(() => setCounter({ value: counter.value++ }), SHORT_DELAY_IN_MS);
 
       if(counter.value === fibonacciNumbers.length) {
         clearInterval(interval);

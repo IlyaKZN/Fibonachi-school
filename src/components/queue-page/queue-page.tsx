@@ -6,6 +6,7 @@ import { Button } from "../ui/button/button";
 import { Queue } from "./queue";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const QueuePage: React.FC = () => {
 
@@ -72,7 +73,7 @@ export const QueuePage: React.FC = () => {
     await new Promise((res, rej) => setTimeout(() => {
       setIndexChangingEl(null);
       res('');
-    }, 500))
+    }, SHORT_DELAY_IN_MS))
   }
 
   return (

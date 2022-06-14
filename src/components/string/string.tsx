@@ -5,6 +5,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 type TStringComponent = {
   splitString: { status: ElementStates, value: string }[];
@@ -53,7 +54,7 @@ export const StringComponent: FC = () => {
       arr[start].status = ElementStates.Modified;
       arr[end].status = ElementStates.Modified;
       setAlgorithmState((prevState) => ({ ...prevState, splitString: [...arr] }));
-    }, 1000);
+    }, DELAY_IN_MS);
   };
 
   return (

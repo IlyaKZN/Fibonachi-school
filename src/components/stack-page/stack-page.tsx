@@ -6,6 +6,7 @@ import { Button } from "../ui/button/button";
 import { Stack } from "./stack";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 type TStackValue = {
   value: string,
@@ -56,7 +57,7 @@ export const StackPage: React.FC = () => {
       stack[length - 1] = {...lastEl, state: ElementStates.Default};
       setStackValue([...stack]);
       res('');
-    }, 500))
+    }, SHORT_DELAY_IN_MS))
   }
 
   const getElements = ({ startAnim }: { startAnim: boolean }) => {
