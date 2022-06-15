@@ -10,7 +10,7 @@ import { ElementStates } from "../../types/element-states";
 import { DELAY_IN_MS } from "../../constants/delays";
 
 type TElState = {
-  value: number | undefined;
+  value: number | string | undefined;
   state: ElementStates;
   head: "head" | ReactElement | null;
   tail: "tail" | ReactElement | null;
@@ -30,7 +30,7 @@ type TButtonsState = {
 };
 
 export const ListPage: React.FC = () => {
-  const [linkedList, setLinkedList] = useState<LinkedList<number>>();
+  const [linkedList, setLinkedList] = useState<LinkedList<number | string>>();
   const [linkedListValue, setLinkedListValue] = useState<TElState[] | null>(
     null
   );
@@ -52,7 +52,7 @@ export const ListPage: React.FC = () => {
     useState<TButtonsState>(defaultButtonsState);
 
   useEffect(() => {
-    const newLinkedList = new LinkedList<number>(getRandomArr());
+    const newLinkedList = new LinkedList<number | string>(getRandomArr());
     setLinkedList(newLinkedList);
   }, []);
 
@@ -90,7 +90,7 @@ export const ListPage: React.FC = () => {
     }, DELAY_IN_MS);
   };
 
-  const getDefaultLinkedListValue = (arr: number[] | null) => {
+  const getDefaultLinkedListValue = (arr: (number | string)[] | null) => {
     if (!arr) {
       return [];
     }
@@ -111,7 +111,7 @@ export const ListPage: React.FC = () => {
   };
 
   const getRandomArr = () => {
-    const randomArr: number[] = [];
+    const randomArr: (number | string)[] = [];
 
     const maxValue = 9999;
     const minValue = 1;
@@ -156,7 +156,7 @@ export const ListPage: React.FC = () => {
     }
     arrSteps.push(copyArr(initialArr));
 
-    linkedList?.prepend(Number(elInputValue));
+    linkedList?.prepend(+elInputValue || elInputValue);
     updateLinkedListValue();
 
     let newArr = getDefaultLinkedListValue(linkedList!.toArray());
@@ -205,7 +205,7 @@ export const ListPage: React.FC = () => {
     
     arrSteps.push(copyArr(initialArr));
 
-    linkedList?.append(Number(elInputValue));
+    linkedList?.append(+elInputValue || elInputValue);
     updateLinkedListValue();
 
     let newArr = getDefaultLinkedListValue(linkedList!.toArray());
@@ -322,7 +322,7 @@ export const ListPage: React.FC = () => {
     const arrSteps = [];
     const initialArr = linkedListValue!;
 
-    linkedList?.addByIndex(Number(elInputValue), Number(indexInputValue));
+    linkedList?.addByIndex(+elInputValue || elInputValue, Number(indexInputValue));
     updateLinkedListValue();
 
     initialArr[0].head = (
