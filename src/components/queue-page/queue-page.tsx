@@ -76,6 +76,23 @@ export const QueuePage: React.FC = () => {
     }, SHORT_DELAY_IN_MS))
   }
 
+  const renderCircles = () => {
+    let content = [];
+    for (let i = 0; i < queueValue.length; i++) {
+      content.push(
+        <Circle
+          key={i}
+          index={i}
+          letter={queueValue[i] || undefined}
+          head={i === endIndices?.headIndex ? 'head' : null}
+          tail={i === endIndices?.tailIndex ? 'tail' : null}
+          state={i === indexChangingEl ? ElementStates.Changing : ElementStates.Default}
+        />
+      )
+    }
+    return content;
+  }
+
   return (
     <SolutionLayout title="Очередь">
       <div className={styles.controlContainer}>
@@ -93,22 +110,7 @@ export const QueuePage: React.FC = () => {
         <Button text="Очистить" onClick={clearQueue} />
       </div>
       <div className={styles.circlesContainer}>
-        {function() {
-          let content = [];
-          for (let i = 0; i < queueValue.length; i++) {
-            content.push(
-              <Circle
-                key={i}
-                index={i}
-                letter={queueValue[i] || undefined}
-                head={i === endIndices?.headIndex ? 'head' : null}
-                tail={i === endIndices?.tailIndex ? 'tail' : null}
-                state={i === indexChangingEl ? ElementStates.Changing : ElementStates.Default}
-              />
-            )
-          }
-          return content;
-        }()}
+        {renderCircles()}
       </div>
     </SolutionLayout>
   );

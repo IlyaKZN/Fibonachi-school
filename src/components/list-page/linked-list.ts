@@ -110,6 +110,12 @@ export class LinkedList<T> implements ILinkedList<T> {
       console.log('Список пуст!')
       return
     }
+    if (this.size === 1) {
+      this.head = null;
+      this.tail = null;
+      this.size--;
+      return
+    }
     this.head = this.head.next;
     this.size--;
   }
@@ -121,6 +127,8 @@ export class LinkedList<T> implements ILinkedList<T> {
     }
     if (this.size === 1) {
       this.head = null;
+      this.tail = null;
+      this.size--;
       return
     }
     let currentNode: LinkedListNode<T> | null = this.head

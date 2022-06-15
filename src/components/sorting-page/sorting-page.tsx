@@ -4,16 +4,17 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
-import { BLUE, GREEN, VIOLET } from "../../constants/colors";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { BLUE } from "../../constants/colors";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { getBubbleSortSteps, getSelectionSortSteps } from "./utils";
 
-type TColumnData = {
+export type TColumnData = {
   value: number;
   color: string;
   columnHeight: number;
 };
 
-type TArr = TColumnData[];
+export type TArr = TColumnData[];
 
 type TDefaultButtonsState = "default" | "disabled" | "isLoader";
 
@@ -38,6 +39,10 @@ export const SortingPage: React.FC = () => {
   };
   const [buttonsState, setButtonsState] =
     useState<TButtonsState>(defaultButtonsState);
+
+  useEffect(() => {
+    getNewArr();
+  }, [])
 
   useEffect(() => {
     if (arrSteps.length) {
@@ -83,7 +88,7 @@ export const SortingPage: React.FC = () => {
 
         return nextStep;
       });
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
   };
 
   const getNewArr = () => {
@@ -116,25 +121,17 @@ export const SortingPage: React.FC = () => {
     setInitialArr(resArr);
   };
 
-  const swap = (arr: TArr, firstIndex: number, secondIndex: number): void => {
-    const temp = arr[firstIndex];
-    arr[firstIndex] = arr[secondIndex];
-    arr[secondIndex] = temp;
-  };
+  const selectionSort = (method: "ascending" | "descending") => {
+    setButtonsStateInProcess(method);
+    setArrSteps([]);
+    setArrSteps(getSelectionSortSteps(initialArr, method));
+  }
 
-  const copyArr = (arr: TArr) => {
-    const cloneArr: TArr = [];
-    arr.forEach((el, index) => {
-      let newEl: TColumnData | {} = {};
-      for (let key in el) {
-        //@ts-ignore
-        newEl[key] = el[key];
-      }
-      //@ts-ignore
-      cloneArr[index] = newEl;
-    });
-    return cloneArr;
-  };
+  const bubbleSort = (method: "ascending" | "descending") => {
+    setButtonsStateInProcess(method);
+    setArrSteps([]);
+    setArrSteps(getBubbleSortSteps(initialArr, method))
+  }
 
   const setButtonsStateInProcess = (method: "ascending" | "descending") => {
     if (method === "ascending") {
@@ -153,96 +150,6 @@ export const SortingPage: React.FC = () => {
       });
     }
     setCurrentStep(0);
-  };
-
-  const bubbleSort = (method: "ascending" | "descending") => {
-    setButtonsStateInProcess(method);
-    const arrSteps: TArr[] = [];
-    setArrSteps([]);
-    let sortableArray = copyArr(initialArr);
-    const length = sortableArray.length;
-    for (let i = 0; i < length; i++) {
-      for (let j = 0; j < length - i - 1; j++) {
-        if (sortableArray[j - 1]) {
-          sortableArray[j - 1].color = BLUE;
-        }
-        sortableArray[j].color = VIOLET;
-        sortableArray[j + 1].color = VIOLET;
-        arrSteps.push(copyArr(sortableArray));
-        if (method === "ascending") {
-          if (sortableArray[j + 1].value < sortableArray[j].value) {
-            swap(sortableArray, j, j + 1);
-          }
-        } else {
-          if (sortableArray[j + 1].value > sortableArray[j].value) {
-            swap(sortableArray, j, j + 1);
-          }
-        }
-        if (j === length - i - 2) {
-          sortableArray[j + 1].color = GREEN;
-          sortableArray[j].color = BLUE;
-          arrSteps.push(copyArr(sortableArray));
-        }
-        if (j === 0) {
-          sortableArray[j].color = GREEN;
-          arrSteps.push(copyArr(sortableArray));
-        }
-      }
-    }
-    setArrSteps([...arrSteps]);
-  };
-
-  const selectionSort = (method: "ascending" | "descending") => {
-    setButtonsStateInProcess(method);
-    const arrSteps: TArr[] = [];
-    arrSteps.push(copyArr(initialArr));
-    let sortableArray = copyArr(initialArr);
-    const length = sortableArray.length;
-    const cycle = (i: number) => {
-      if (i < length) {
-        let maxInd = i;
-        sortableArray[i].color = VIOLET;
-        arrSteps.push(copyArr(sortableArray));
-
-        const findMax = (j: number) => {
-          if (j < length) {
-            sortableArray[j].color = VIOLET;
-            arrSteps.push(copyArr(sortableArray));
-
-            if (method === "ascending") {
-              if (sortableArray[j].value < sortableArray[maxInd].value) {
-                maxInd = j;
-              }
-            } else {
-              if (sortableArray[j].value > sortableArray[maxInd].value) {
-                maxInd = j;
-              }
-            }
-            if (i !== j) {
-              sortableArray[j].color = BLUE;
-              arrSteps.push(copyArr(sortableArray));
-            }
-
-            findMax(j + 1);
-          }
-        };
-
-        findMax(i);
-        if (maxInd !== i) {
-          swap(sortableArray, maxInd, i);
-          sortableArray[i].color = GREEN;
-          sortableArray[maxInd].color = BLUE;
-          arrSteps.push(copyArr(sortableArray));
-        } else {
-          sortableArray[maxInd].color = GREEN;
-          arrSteps.push(copyArr(sortableArray));
-        }
-
-        cycle(i + 1);
-      }
-    };
-    cycle(0);
-    setArrSteps([...arrSteps]);
   };
 
   return (

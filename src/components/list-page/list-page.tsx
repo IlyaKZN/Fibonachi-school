@@ -7,7 +7,7 @@ import { LinkedList } from "./linked-list";
 import { Circle } from "../ui/circle/circle";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
 import { ElementStates } from "../../types/element-states";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 type TElState = {
   value: number | undefined;
@@ -34,7 +34,7 @@ export const ListPage: React.FC = () => {
   const [linkedListValue, setLinkedListValue] = useState<TElState[] | null>(
     null
   );
-  const [indexInputValue, setIndexInputValue] = useState("");
+  const [indexInputValue, setIndexInputValue] = useState('');
   const [elInputValue, setElInputValue] = useState("");
   const [arrSteps, setArrSteps] = useState<TElState[][]>([]);
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -87,7 +87,7 @@ export const ListPage: React.FC = () => {
 
         return nextStep;
       });
-    }, SHORT_DELAY_IN_MS);
+    }, DELAY_IN_MS);
   };
 
   const getDefaultLinkedListValue = (arr: number[] | null) => {
@@ -145,20 +145,24 @@ export const ListPage: React.FC = () => {
     setButtonsStateInProcess('addToHead');
     const arrSteps = [];
     const initialArr = linkedListValue!;
-    initialArr[0].head = (
-      <Circle
-        isSmall={true}
-        letter={elInputValue}
-        state={ElementStates.Changing}
-      />
-    );
+    if (initialArr.length) {
+      initialArr[0].head = (
+        <Circle
+          isSmall={true}
+          letter={elInputValue}
+          state={ElementStates.Changing}
+        />
+      );
+    }
     arrSteps.push(copyArr(initialArr));
 
     linkedList?.prepend(Number(elInputValue));
     updateLinkedListValue();
 
     let newArr = getDefaultLinkedListValue(linkedList!.toArray());
-    newArr[1].head = null;
+    if (newArr[1]) {
+      newArr[1].head = null;
+    }
     newArr[0].state = ElementStates.Modified;
     arrSteps.push(copyArr(newArr));
 
@@ -189,20 +193,25 @@ export const ListPage: React.FC = () => {
     setButtonsStateInProcess('addToTail');
     const arrSteps = [];
     const initialArr = linkedListValue!;
-    initialArr[initialArr.length - 1].head = (
-      <Circle
-        isSmall={true}
-        letter={elInputValue}
-        state={ElementStates.Changing}
-      />
-    );
+    if (initialArr.length) {
+      initialArr[initialArr.length - 1].head = (
+        <Circle
+          isSmall={true}
+          letter={elInputValue}
+          state={ElementStates.Changing}
+        />
+      );
+    }
+    
     arrSteps.push(copyArr(initialArr));
 
     linkedList?.append(Number(elInputValue));
     updateLinkedListValue();
 
     let newArr = getDefaultLinkedListValue(linkedList!.toArray());
-    newArr[newArr.length - 2].head = null;
+    if (newArr[newArr.length - 2]) {
+      newArr[newArr.length - 2].head = null;
+    }
     newArr[newArr.length - 1].state = ElementStates.Modified;
     arrSteps.push(copyArr(newArr));
 
@@ -262,6 +271,10 @@ export const ListPage: React.FC = () => {
   };
 
   const deleteByIndex = () => {
+    if (isNaN(+indexInputValue)) {
+      alert('Индекс должен быть числом!')
+      return
+    }
     if (Number(indexInputValue) < 0 || Number(indexInputValue) > linkedListValue?.length! - 1) {
       console.log('Введите корректный индекс!')
       return
@@ -298,6 +311,10 @@ export const ListPage: React.FC = () => {
   };
 
   const pushByIndex = () => {
+    if (isNaN(+indexInputValue)) {
+      alert('Индекс должен быть числом!')
+      return
+    }
     if (Number(indexInputValue) < 0 || Number(indexInputValue) > linkedListValue?.length! - 1) {
       console.log('Введите корректный индекс!')
       return
@@ -427,7 +444,7 @@ export const ListPage: React.FC = () => {
         <Input
           placeholder="Введите индекс"
           onChange={onChangeIndex}
-          value={indexInputValue}
+          value={`${indexInputValue}`}
           disabled={buttonsState.indexInputValue === 'disabled'}
         />
         <Button
@@ -455,7 +472,7 @@ export const ListPage: React.FC = () => {
               >
                 {index !== 0 ? <ArrowIcon key={`arrow ${index}`} /> : null}
                 <Circle
-                  letter={el.value ? `${el.value}` : undefined}
+                  letter={el.value || el.value === 0 ? `${el.value}` : undefined}
                   key={`circle ${index}`}
                   index={index}
                   head={el.head}
