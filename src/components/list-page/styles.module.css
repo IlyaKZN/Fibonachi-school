@@ -1,0 +1,31 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  max-width: 952px;
+  width: 100%;
+  margin: 0 auto 148px auto;
+}
+
+.addIndexButton {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.deleteIndexButton {
+  grid-column-start: 4;
+  grid-column-end: 6;
+}
+
+.circlesContainer {
+  display: flex;
+  justify-content: center;
+  margin: 52px auto 0;
+  gap: 16px;
+}
+
+.circleContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

@@ -1,0 +1,24 @@
+.controlContainer {
+  display: flex;
+  max-width: 829px;
+  margin: 0 auto;
+  gap: 60px;
+}
+
+.input {
+  margin-right: 0;
+  width: 377px;
+}
+
+.container {
+  display: flex;
+  column-gap: 12px;
+  width: 100%;
+}
+
+.circlesContainer {
+  display: flex;
+  justify-content: center;
+  margin: 52px auto 0;
+  gap: 16px;
+}

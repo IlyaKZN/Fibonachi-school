@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  align-items: center;
+  max-width: 924px;
+  width: 100%;
+  margin: 0 auto 48px auto;
+}
+
+.radioButtonsContainer {
+  display: flex;
+  gap: 40px;
+  margin-right: 52px;
+}
+
+.methodButtonsContainer {
+  display: flex;
+  gap: 12px;
+}
+
+.newArrayButton {
+  margin-left: auto;
+}
+
+.columnsContainer {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 340px;
+}
+
+.columnDescription {
+  margin: 6px 0 0 0;
+}
+
+.ascendingButton {
+  min-width: 205px;
+}
+
+.descendingButton {
+  min-width: 186px;
+}
