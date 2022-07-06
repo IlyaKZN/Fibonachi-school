@@ -5,6 +5,17 @@ export const getBubbleSortSteps = (initialArr: TArr, method: "ascending" | "desc
   const arrSteps: TArr[] = [];
   let sortableArray = copyArr(initialArr);
   const length = sortableArray.length;
+
+  if (!initialArr.length) {
+    return [[]];
+  }
+
+  if (initialArr.length === 1) {
+    initialArr[0].color = GREEN;
+    arrSteps.push(initialArr);
+    return arrSteps;
+  }
+
   for (let i = 0; i < length; i++) {
     for (let j = 0; j < length - i - 1; j++) {
       if (sortableArray[j - 1]) {
@@ -39,8 +50,21 @@ export const getBubbleSortSteps = (initialArr: TArr, method: "ascending" | "desc
 export const getSelectionSortSteps = (initialArr: TArr, method: "ascending" | "descending") => {
   
   const arrSteps: TArr[] = [];
+  
+
+  if (!initialArr.length) {
+    return [[]];
+  }
+
+  if (initialArr.length === 1) {
+    initialArr[0].color = GREEN;
+    arrSteps.push(initialArr);
+    return arrSteps;
+  }
+
   arrSteps.push(copyArr(initialArr));
   let sortableArray = copyArr(initialArr);
+
   const length = sortableArray.length;
   const cycle = (i: number) => {
     if (i < length) {

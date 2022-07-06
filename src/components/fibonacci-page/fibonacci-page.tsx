@@ -17,7 +17,7 @@ export const FibonacciPage: FC = () => {
   const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setValue(value);
-    if (+value < 20 && +value > 0 && startButtonisDisabled) {
+    if (+value < 20 && +value > 0) {
       setStartButtonisDisabled(false);
     } else if (!startButtonisDisabled) {
       setStartButtonisDisabled(true);
@@ -57,15 +57,17 @@ export const FibonacciPage: FC = () => {
           type={""}
           max={19}
           onChange={(e) => onChangeValue(e as ChangeEvent<HTMLInputElement>)}
+          data-testid="input"
         />
         <Button
           disabled={startButtonisDisabled}
           text="Рассчитать"
           onClick={() => onButtonClick(+value)}
           isLoader={algorithmState.inProgress}
+          data-testid="button"
         />
       </div>
-      <div className={styles.circleContainer}>
+      <div className={styles.circleContainer} data-testid="circlesContainer">
         {fibonacciNumbers.length
           ? fibonacciNumbers.map((el, index) => {
               if (index <= counter.value) {
