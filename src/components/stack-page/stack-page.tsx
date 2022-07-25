@@ -9,7 +9,7 @@ import { ElementStates } from "../../types/element-states";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 type TStackValue = {
-  value: string,
+  value: string;
   state: ElementStates;
 }[];
 
@@ -32,12 +32,11 @@ export const StackPage: React.FC = () => {
       stack!.push(value);
       setValue("");
       getElements({ startAnim: true });
-    };
+    }
   };
 
   const deleteElement = () => {
     animation().then(() => {
-      console.log(stackValue);
       stack!.pop();
       getElements({ startAnim: false });
     });
@@ -48,21 +47,26 @@ export const StackPage: React.FC = () => {
     getElements({ startAnim: false });
   };
 
-  async function animation (stack: TStackValue = stackValue) {
+  async function animation(stack: TStackValue = stackValue) {
     const length = stack.length;
     const lastEl = stack[length - 1];
-    stack[length - 1] = {...lastEl, state: ElementStates.Changing}
+    stack[length - 1] = { ...lastEl, state: ElementStates.Changing };
     setStackValue([...stack]);
-    await new Promise((res, rej) => setTimeout(() => {
-      stack[length - 1] = {...lastEl, state: ElementStates.Default};
-      setStackValue([...stack]);
-      res('');
-    }, SHORT_DELAY_IN_MS))
+    await new Promise((res, rej) =>
+      setTimeout(() => {
+        stack[length - 1] = { ...lastEl, state: ElementStates.Default };
+        setStackValue([...stack]);
+        res("");
+      }, SHORT_DELAY_IN_MS)
+    );
   }
 
   const getElements = ({ startAnim }: { startAnim: boolean }) => {
     const elements = stack!.getElements();
-    const elementsData: TStackValue = elements.map((el) => ({ value: el, state: ElementStates.Default }));
+    const elementsData: TStackValue = elements.map((el) => ({
+      value: el,
+      state: ElementStates.Default,
+    }));
     setStackValue([...elementsData]);
     if (startAnim) {
       animation(elementsData);
@@ -79,13 +83,29 @@ export const StackPage: React.FC = () => {
             extraClass={styles.input}
             maxLength={4}
             isLimitText={true}
+            data-testid="input"
           />
-          <Button text="Добавить" onClick={pushElement} disabled={!value} />
-          <Button text="Удалить" onClick={deleteElement} disabled={!stackValue.length} />
+          <Button
+            text="Добавить"
+            onClick={pushElement}
+            disabled={!value}
+            data-testid="button"
+          />
+          <Button
+            text="Удалить"
+            onClick={deleteElement}
+            disabled={!stackValue.length}
+            data-testid="deleteButton"
+          />
         </div>
-        <Button text="Очистить" onClick={cleareStack} disabled={!stackValue.length} />
+        <Button
+          text="Очистить"
+          onClick={cleareStack}
+          disabled={!stackValue.length}
+          data-testid="clearButton"
+        />
       </div>
-      <div className={styles.circlesContainer}>
+      <div className={styles.circlesContainer} data-testid="circlesContainer">
         {stackValue.length
           ? stackValue.map((el, index) => (
               <Circle
